@@ -19,25 +19,25 @@ allTopics = plan.find_resources("google_pubsub_topic")
 
 voilations = {}
 for allTopics as address, rc {
-    message_storage_policy = rc["change"]["after"]["message_storage_policy"]
-    #print(message_storage_policy)
-    is_undefined = rule { types.type_of(message_storage_policy) is "undefined" }
-    #print(is_undefined)
+	message_storage_policy = rc["change"]["after"]["message_storage_policy"]
+	#print(message_storage_policy)
+	is_undefined = rule { types.type_of(message_storage_policy) is "undefined" }
+	#print(is_undefined)
 
-    if is_undefined is true {
-        #print("hidddd")
-        voilations[address] = rc
-        
-    } else {
-    
-    allowed_persistence_regions = rc["change"]["after"]["message_storage_policy"][0]["allowed_persistence_regions"]
+	if is_undefined is true {
+		#print("hidddd")
+		voilations[address] = rc
 
-	    for allowed_persistence_regions as region {
-		    if not strings.has_prefix(region, prefix) {
-			    voilations[address] = rc
+	} else {
+
+		allowed_persistence_regions = rc["change"]["after"]["message_storage_policy"][0]["allowed_persistence_regions"]
+
+		for allowed_persistence_regions as region {
+			if not strings.has_prefix(region, prefix) {
+				voilations[address] = rc
+			}
 		}
-      }
-    } 
+	}
 
 }
 
@@ -45,5 +45,3 @@ for allTopics as address, rc {
 
 # Main rule
 main = rule { length(voilations) is 0 }
-
-
