@@ -1,4 +1,4 @@
-
+{
   "modules": {
     "tfplan-functions": {
       "path": "../../tfplan-functions.sentinel"
